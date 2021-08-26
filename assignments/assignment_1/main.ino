@@ -12,9 +12,7 @@ void write(int status_1, int status_2, int status_3) {
     delay(100);
 }
 
-void setup() {
-  
-}
+void setup() {}
 
 void loop() {
    

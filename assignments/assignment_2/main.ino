@@ -72,6 +72,7 @@ void loop() {
     else {
 
         is_button_left_pushed = false;
+        delay(50);
     }
 
     //Turn off LED
@@ -118,6 +119,7 @@ void loop() {
     else {
 
         is_button_right_pushed = false;
+        delay(50);
     }
 
     //Turn off LED
@@ -153,6 +155,7 @@ void loop() {
     else {
 
         is_button_center_pushed = false;
+        delay(50);
     }
     
     //Flashing LED

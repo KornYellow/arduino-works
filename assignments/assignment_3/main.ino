@@ -233,7 +233,7 @@ void setup() {
     Serial.begin(115200);
     while(!Serial);
     Serial.println();
-    Serial.println("Serial is ready!");
+    Serial.println("Serial Ready!");
 
     //Setup Game
     gameSetup();

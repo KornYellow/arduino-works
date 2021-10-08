@@ -122,7 +122,7 @@ void resetDisplay() {
     }
 }
 
-/**8
+/**
  *  Turn on LED on (x, y) location.
  *  @param x x location on the matrix.
  *  @param y y location on the matrix.

@@ -122,7 +122,7 @@ void resetDisplay() {
     }
 }
 
-/**
+/**8
  *  Turn on LED on (x, y) location.
  *  @param x x location on the matrix.
  *  @param y y location on the matrix.
@@ -440,9 +440,8 @@ public:
 enum GameState {
     GAME_WAITING,
     GAME_RUNNING,
-    GAME_ENDING,
 };
-int game_state = GAME_RUNNING;
+int game_state = GAME_WAITING;
 
 // Initialize Player's Paddles
 Paddle player_1(2, 2);
@@ -453,28 +452,41 @@ int player_2_score = 0;
 // Initialize Puck
 Puck puck(GAME_WIDTH/2, GAME_HEIGHT/2);
 
-void gameSetup() {
-    
-}
 void gameWaiting() {
     
     if(game_state != GAME_WAITING) return;
+
+    // Draw Player's Paddles
+    player_1.draw();
+    player_2.draw();
+
+    if(isButtonPressed(BUTTON_PLAYER_1_A) ||
+       isButtonPressed(BUTTON_PLAYER_1_B) ||
+       isButtonPressed(BUTTON_PLAYER_2_A) ||
+       isButtonPressed(BUTTON_PLAYER_2_B)) {
+
+        puck.reset();
+        game_state = GAME_RUNNING;
+    }
 }
 void gameRunning() {
     
     if(game_state != GAME_RUNNING) return;
 
     // Get Winner
-    if(puck.getWinner() == 1) { // Player 1 Wins
+    if(puck.getWinner() != 0) {
+
         puck.blink();
-        blinkScore(player_1_score, player_2_score, 1);
-        player_1_score++;
-        puck.reset();
-    }
-    else if(puck.getWinner() == 2) { // Player 2 Wins
-        puck.blink();
-        blinkScore(player_1_score, player_2_score, 2);
-        player_2_score++;
+        blinkScore(player_1_score, player_2_score, puck.getWinner());
+        if(puck.getWinner() == 1) player_1_score++;
+        if(puck.getWinner() == 2) player_2_score++;
+
+        if(player_1_score > 5 || player_1_score > 5) {
+            
+            game_state = GAME_WAITING;
+            return;
+        }
+           
         puck.reset();
     }
 
@@ -511,10 +523,6 @@ void gameRunning() {
     // Draw Puck
     puck.draw();
 }
-void gameEnding() {
-    
-    if(game_state != GAME_ENDING) return;
-}
 
 /*\
  * =============================================
@@ -534,7 +542,6 @@ void setup() {
     ledMatrixSetup();
     speakerSetup();
     buttonSetup();
-    gameSetup();
 }
 
 void loop() {
@@ -542,5 +549,4 @@ void loop() {
     // Game Loop
     gameWaiting();
     gameRunning();
-    gameEnding();
 }

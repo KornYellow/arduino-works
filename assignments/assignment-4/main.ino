@@ -484,6 +484,8 @@ void gameRunning() {
         if(player_1_score > 5 || player_1_score > 5) {
             
             game_state = GAME_WAITING;
+            player_1_score = 0;
+            player_2_score = 0;
             return;
         }
            

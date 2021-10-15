@@ -105,7 +105,9 @@ void loop() {
     int input_top   = digitalRead(BUTTON_TOP);
     int input_right = digitalRead(BUTTON_RIGHT);
     int input_walk  = digitalRead(BUTTON_WALK);
+
     Serial.println("TOP : " + String(input_top) + " | RIGHT : " + String(input_right) + " | WALK : " + String(input_walk));
+    
     int input = input_walk * 4 + input_right * 2 + input_top;
 
     state = finite_state[state].next[input];

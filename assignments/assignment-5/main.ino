@@ -28,7 +28,7 @@ int led_out[8] = {
 #define RIGHT_GO   B10000110
 #define RIGHT_WAIT B10001010
 #define WALK_GO    B10010001
-#define WALK_WAIT  B12
+#define WALK_WAIT  B10010000
 
 struct State {
 

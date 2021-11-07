@@ -166,8 +166,7 @@ void clockModeNormal() {
     if(time_seconds == alarm_seconds && time_minutes == alarm_minutes && time_hours == alarm_hours) is_alarm = true;
     if(is_alarm) {
 
-        playTone(1000, 200);
-        playTone(800, 200);
+        playTone(1000, 50);
         delay(100);
     }
 }
@@ -476,8 +475,7 @@ void clockModeTimer() {
         
         // Beep
         if(timer_seconds == 0 && timer_minutes == 0 && timer_hours == 0) {
-            playTone(1000, 200);
-            playTone(800, 200);
+            playTone(1000, 50);
             delay(100);
         }
 

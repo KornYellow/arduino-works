@@ -19,7 +19,7 @@
 
 // Clock Mode
 #define MODE_NORMAL 0
-#define MODE_SELECT_MODE 1
+#define MODE_SELECT_MENU 1
 #define MODE_EDIT_NORMAL 2
 #define MODE_EDIT_ALARM 3
 #define MODE_STOP_WATCH 4
@@ -37,7 +37,7 @@
 
 // Clock Mode
 void clockModeNormal();
-void clockModeSelectMode();
+void clockModeSelectMenu();
 void clockModeEditNormal();
 void clockModeEditAlarm();
 void clockModeStopWatch();
@@ -67,7 +67,12 @@ int time_months = 0;
 int time_years = 0;
 char time[9] = "00:00:00";
 
-int mode_selection = 0;
+bool button_pressed_left = false;
+bool button_pressed_right = false;
+bool button_pressed_ok = false;
+
+int menu_selection = 0;
+//int mode_selection = 0;
 
 void setup() {
 
@@ -96,7 +101,7 @@ void loop() {
     screen.clearDisplay();
     
     clockModeNormal();
-    clockModeSelectMode();
+    clockModeSelectMenu();
     clockModeEditNormal();
     clockModeEditAlarm();
     clockModeStopWatch();
@@ -112,7 +117,7 @@ void clockModeNormal() {
     // Change to Mode Select Mode
     if(isButtonPressed(BUTTON_OK)) {
 
-        clock_mode = MODE_SELECT_MODE;
+        clock_mode = MODE_SELECT_MENU;
         return;
     }
 
@@ -120,18 +125,59 @@ void clockModeNormal() {
     drawTextMiddle(25, "07/12/2564", 1, SSD1306_WHITE);
     drawTextMiddle(9, time, 2, SSD1306_WHITE);
 }
-void clockModeSelectMode() {
+void clockModeSelectMenu() {
 
-    if(clock_mode != MODE_SELECT_MODE) return;
+    if(clock_mode != MODE_SELECT_MENU) return;
 
+    // Change to Mode Select Mode
+    if(isButtonPressed(BUTTON_OK)) {
+
+        switch(menu_selection) {
+
+            case 0 : // BACK
+                clock_mode = MODE_NORMAL;
+                break;
+            default :
+                return;
+        }
+
+        menu_selection = 0;
+        return;
+    }
+
+    // Draw Selectable Mode
     drawTextMiddle(0, "-----Select Menu-----", 1, SSD1306_WHITE);
     drawText(6,  8, "Back", 1, SSD1306_WHITE);
     drawText(6, 16, "Edit Time", 1, SSD1306_WHITE);
-    drawText(6, 24, "Set Alarm", 1, SSD1306_WHITE);
+    drawText(6, 24, "Exit Save", 1, SSD1306_WHITE);
 
     drawText(72,  8, "Set Mode", 1, SSD1306_WHITE);
-    drawText(72, 16, "Exit Save", 1, SSD1306_WHITE);
+    drawText(72, 16, "Set Alarm", 1, SSD1306_WHITE);
     drawText(72, 24, "Exit", 1, SSD1306_WHITE);
+
+    // Move Cursor
+    if(isButtonPressed(BUTTON_LEFT) && !button_pressed_left) {
+        
+        menu_selection--;
+        button_pressed_left = true;
+    }
+    else if(!isButtonPressed(BUTTON_LEFT)) button_pressed_left = false;
+
+    if(isButtonPressed(BUTTON_RIGHT) && !button_pressed_right) {
+        
+        menu_selection++;
+        button_pressed_right = true;
+    }
+    else if(!isButtonPressed(BUTTON_RIGHT)) button_pressed_right = false;
+
+    if(menu_selection > 5) menu_selection = 0;
+    if(menu_selection < 0) menu_selection = 5;
+    Serial.println("- Menu : " + String(menu_selection));
+
+    // Draw Cursor
+    int cursor_x = 0;
+    int cursor_y = 8;
+    drawText(cursor_x + ((menu_selection % 2) * 66), cursor_y + ((menu_selection / 2) * 8), ">", 1, SSD1306_WHITE);
 }
 void clockModeEditNormal() {
 

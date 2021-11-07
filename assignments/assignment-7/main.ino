@@ -115,11 +115,13 @@ void clockModeNormal() {
     if(clock_mode != MODE_NORMAL) return;
 
     // Change to Mode Select Mode
-    if(isButtonPressed(BUTTON_OK)) {
+    if(isButtonPressed(BUTTON_OK) && !button_pressed_ok) {
 
+        button_pressed_ok = true;
         clock_mode = MODE_SELECT_MENU;
         return;
     }
+    if(!isButtonPressed(BUTTON_OK)) button_pressed_ok = false; 
 
     drawTextMiddle(0, "-----Smart Clock-----", 1, SSD1306_WHITE);
     drawTextMiddle(25, "07/12/2564", 1, SSD1306_WHITE);
@@ -130,7 +132,7 @@ void clockModeSelectMenu() {
     if(clock_mode != MODE_SELECT_MENU) return;
 
     // Change to Mode Select Mode
-    if(isButtonPressed(BUTTON_OK)) {
+    if(isButtonPressed(BUTTON_OK) && !button_pressed_ok) {
 
         switch(menu_selection) {
 
@@ -141,9 +143,11 @@ void clockModeSelectMenu() {
                 return;
         }
 
+        button_pressed_ok = true;
         menu_selection = 0;
         return;
     }
+    else if(!isButtonPressed(BUTTON_OK)) button_pressed_ok = false;
 
     // Draw Selectable Mode
     drawTextMiddle(0, "-----Select Menu-----", 1, SSD1306_WHITE);
@@ -160,6 +164,8 @@ void clockModeSelectMenu() {
         
         menu_selection--;
         button_pressed_left = true;
+
+        if(IS_DEBUG_MODE) Serial.println("- Menu : " + String(menu_selection));
     }
     else if(!isButtonPressed(BUTTON_LEFT)) button_pressed_left = false;
 
@@ -167,12 +173,13 @@ void clockModeSelectMenu() {
         
         menu_selection++;
         button_pressed_right = true;
+
+        if(IS_DEBUG_MODE) Serial.println("- Menu : " + String(menu_selection));
     }
     else if(!isButtonPressed(BUTTON_RIGHT)) button_pressed_right = false;
 
     if(menu_selection > 5) menu_selection = 0;
     if(menu_selection < 0) menu_selection = 5;
-    Serial.println("- Menu : " + String(menu_selection));
 
     // Draw Cursor
     int cursor_x = 0;

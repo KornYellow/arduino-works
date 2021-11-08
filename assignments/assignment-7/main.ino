@@ -46,9 +46,9 @@ int clock_mode = MODE_NORMAL;
 bool is_blink = false;
 bool is_first_interrupt = true;
 bool blink_enable = false;
-int time_seconds = 0;
-int time_minutes = 0;
-int time_hours = 12;
+uint8_t time_seconds = 0;
+uint8_t time_minutes = 0;
+uint8_t time_hours = 12;
 char time[9] = "00:00:00";
 char time_edit[9] = "00:00:00";
 
@@ -73,9 +73,9 @@ int timer_minutes = 0;
 int timer_hours = 0;
 
 bool is_alarm = 0;
-int alarm_seconds = -1;
-int alarm_minutes = -1;
-int alarm_hours = -1;
+uint8_t alarm_seconds = 0;
+uint8_t alarm_minutes = 0;
+uint8_t alarm_hours = 0;
 
 int menu_selection = 0;
 int mode_selection = 0;
@@ -205,7 +205,7 @@ void clockModeSelectMenu() {
                 playTone(500, 30);
 
                 clock_mode = MODE_EDIT_ALARM;
-                if(alarm_seconds == -1) {
+                if(alarm_seconds == 0 && alarm_minutes == 0 && alarm_hours == 0) {
                     
                     edit_time_seconds = time_seconds;
                     edit_time_minutes = time_minutes;

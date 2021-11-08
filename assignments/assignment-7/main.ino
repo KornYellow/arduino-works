@@ -839,7 +839,7 @@ void stopwatchEnd() {
         stopwatch_seconds = 0;
         stopwatch_minutes = 0;
         stopwatch_hours = 0;
-        stopwatch_mode = STOPWATCH_START;
+        stopwatch_mode = STOPWATCH_WAIT;
 
         clock_mode = MODE_SELECT_MENU;
         return;
